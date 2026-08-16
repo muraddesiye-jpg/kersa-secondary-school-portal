@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kersa Secondary School - Excellence in Education</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ffd700;
+            --dark: #2c3e50;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+        }
+        
+        /* Welcome Overlay */
+        .welcome-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .welcome-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .bismillah {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            animation: fadeInUp 1.5s ease;
+        }
+        
+        .loader {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #ffd700;
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 0;
+        }
+        
+        .arabic-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-right: 10px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: white !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.4rem;
+            color: #4e54c8 !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 5px;
+            color: #333 !important;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: #4e54c8 !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.1) 100%);
+        }
+        
+        /* Cards */
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover i {
+            transform: scale(1.2);
+        }
+        
+        /* Announcement Cards */
+        .announcement-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #4e54c8;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* AI Chat Widget */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .ai-chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+        
+        .ai-chat-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .ai-chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .ai-chat-window.active {
+            display: flex;
+        }
+        
+        .ai-chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: messageIn 0.3s ease;
+        }
+        
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 5px;
+        }
+        
+        .ai-chat-input {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            background: white;
+        }
+        
+        .ai-chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        
+        .ai-chat-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        footer a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: #ffd700;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: #ffd700;
+            color: #2c3e50 !important;
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-title { font-size: 1.8rem; }
+            .bismillah { font-size: 1.8rem; }
+            .ai-chat-window { width: 300px; right: -10px; }
+            .hero-section { padding: 50px 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Overlay -->
+    <div id="welcomeOverlay" class="welcome-overlay">
+        <div class="welcome-content">
+            <div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <h1 class="welcome-title">Welcome to Kersa Secondary School</h1>
+            <p class="welcome-subtitle">Empowering Minds, Building Futures</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="arabic-text">الله</span>
+                    <span class="d-none d-md-inline">In the name of Allah, the Most Gracious, the Most Merciful</span>
+                </div>
+                <div>
+                    <span class="me-3"><i class="fas fa-phone"></i> +251-XXX-XXXXXX</span>
+                    <span class="d-none d-md-inline"><i class="fas fa-envelope"></i> info@kersaschool.edu.et</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-school"></i> Kersa Secondary School
+            </a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#announcements">Announcements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Excellence in Education</h1>
+                    <p class="lead mb-4">We provide quality education that empowers students to achieve their dreams and become leaders of tomorrow.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#features" class="btn btn-light btn-lg">Explore Features</a>
+                        <a href="admin.html" class="btn btn-outline-light btn-lg">Admin Login</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <i class="fas fa-graduation-cap fa-10x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Features</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-comments text-primary"></i>
+                        <h4>Student-Teacher Chat</h4>
+                        <p>Connect with subject teachers for personalized help</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-video text-success"></i>
+                        <h4>Online Meetings</h4>
+                        <p>Join virtual classes from anywhere</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-book text-warning"></i>
+                        <h4>E-Library</h4>
+                        <p>Access books, notes, and worksheets</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-robot text-danger"></i>
+                        <h4>Murad's AI Assistant</h4>
+                        <p>Ethical AI guidance for your studies</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-file-alt text-info"></i>
+                        <h4>Exams & Worksheets</h4>
+                        <p>Practice tests and study materials</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="fas fa-trophy text-success"></i>
+                        <h4>Achievements</h4>
+                        <p>Track student progress and success</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Announcements Section -->
+    <section id="announcements" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Latest Announcements</h2>
+            <div id="announcementsList">
+                <!-- Dynamic announcements from localStorage -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">About Us</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3><i class="fas fa-bullseye text-primary"></i> Our Mission</h3>
+                    <p>To provide quality education that empowers students with knowledge, skills, and values to become responsible citizens and leaders of tomorrow.</p>
+                </div>
+                <div class="col-md-6">
+                    <h3><i class="fas fa-star text-warning"></i> Core Values</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Excellence in Education</li>
+                        <li><i class="fas fa-check text-success"></i> Integrity and Ethics</li>
+                        <li><i class="fas fa-check text-success"></i> Respect for Diversity</li>
+                        <li><i class="fas fa-check text-success"></i> Community Engagement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-school"></i> Kersa Secondary School</h5>
+                    <p>Excellence in Education</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <hr class="bg-light mt-4">
+            <p class="text-center mb-0">© 2024 Kersa Secondary School. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AI Chat Widget -->
+    <div class="ai-chat-widget">
+        <button class="ai-chat-button" onclick="toggleAIChat()">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="ai-chat-window" id="aiChatWindow">
+            <div class="ai-chat-header">
+                <h6 class="mb-0"><i class="fas fa-robot"></i> Murad's AI Assistant</h6>
+                <button onclick="toggleAIChat()" class="btn-close btn-close-white"></button>
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="message ai-message">
+                    Assalamu Alaikum! I'm Murad's AI Assistant. I'm here to help you with your studies, provide motivation, and answer your questions ethically. How can I help you today?
+                </div>
+            </div>
+            <div class="ai-chat-input">
+                <input type="text" id="aiInput" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendAIMessage()">
+                <button onclick="sendAIMessage()" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Welcome Animation
+        setTimeout(() => {
+            const overlay = document.getElementById('welcomeOverlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+        }, 3000);
+
+        // Load Announcements from localStorage
+        function loadAnnouncements() {
+            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            const defaultAnnouncements = [
+                { id: 1, title: '📢 Welcome Back!', content: 'Welcome to the new academic year. Classes begin on September 1st.', date: '2024-08-25' },
+                { id: 2, title: '📚 Mid-Term Exams', content: 'Mid-term examinations will be held from October 15-20.', date: '2024-10-10' },
+                { id: 3, title: '🏆 Science Fair', content: 'Annual science fair on November 5th. Register your projects!', date: '2024-10-28' }
+            ];
+            
+            const allAnnouncements = announcements.length > 0 ? announcements : defaultAnnouncements;
+            const announcementsList = document.getElementById('announcementsList');
+            
+            announcementsList.innerHTML = allAnnouncements.map(a => `
+                <div class="announcement-card">
+                    <h5>${a.title}</h5>
+                    <p class="mb-1">${a.content}</p>
+                    <small class="text-muted"><i class="far fa-calendar"></i> ${a.date}</small>
+                </div>
+            `).join('');
+        }
+
+        // AI Chat Functions
+        function toggleAIChat() {
+            const chatWindow = document.getElementById('aiChatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage('user', message);
+                input.value = '';
+                
+                // Show typing indicator
+                setTimeout(() => {
+                    const response = getAIResponse(message);
+                    addMessage('ai', response);
+                }, 800);
+            }
+        }
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            
+            // Comprehensive AI responses
+            if (msg.includes('salam') || msg.includes('hello') || msg.includes('hi')) {
+                return "Wa Alaikum Assalam! 😊 I'm here to help you with your studies. Feel free to ask me about any subject!";
+            }
+            else if (msg.includes('motivat') || msg.includes('encourage') || msg.includes('inspire')) {
+                return "🌟 Remember: Every expert was once a beginner. Your hard work today will become your success story tomorrow. Keep pushing forward! You have the power to achieve greatness!";
+            }
+            else if (msg.includes('study') || msg.includes('learn') || msg.includes('focus')) {
+                return "📚 Here are effective study tips:\n1. Break study sessions into 25-minute focused blocks\n2. Create a quiet, organized study space\n3. Review notes within 24 hours\n4. Practice past exam questions\n5. Take regular short breaks\n\nWould you like specific tips for a particular subject?";
+            }
+            else if (msg.includes('math') || msg.includes('mathematics')) {
+                return "🔢 Mathematics is beautiful! Focus on understanding concepts rather than memorizing. Practice regularly and don't hesitate to ask questions. What specific topic are you studying? (Algebra, Geometry, Calculus, etc.)";
+            }
+            else if (msg.includes('english')) {
+                return "📖 English tips: Read regularly, practice writing essays, learn new vocabulary daily, and don't be afraid to speak. What aspect of English do you need help with?";
+            }
+            else if (msg.includes('physics')) {
+                return "⚡ Physics helps us understand the universe! Start with fundamental concepts and build up. Practice problem-solving regularly. What physics topic are you studying?";
+            }
+            else if (msg.includes('chemistry')) {
+                return "🧪 Chemistry is the central science! Focus on understanding reactions and practice balancing equations. What chemistry topic do you need help with?";
+            }
+            else if (msg.includes('biology')) {
+                return "🧬 Biology is the study of life! Use diagrams to visualize processes and create mnemonics for memorization. What biology topic are you studying?";
+            }
+            else if (msg.includes('exam') || msg.includes('test')) {
+                return "📝 Exam preparation tips:\n1. Start early, don't cram\n2. Practice past papers\n3. Create summary notes\n4. Teach others to reinforce learning\n5. Get enough sleep before exams\n\nYou've got this! 💪";
+            }
+            else if (msg.includes('ethic') || msg.includes('honest') || msg.includes('integrity')) {
+                return "🤝 Always maintain academic integrity! Honesty builds character and true learning comes from genuine effort. Your integrity is more valuable than any grade. Stay ethical!";
+            }
+            else if (msg.includes('thank')) {
+                return "You're welcome! 😊 I'm always here to help you succeed. Keep up the great work!";
+            }
+            else if (msg.includes('career') || msg.includes('future') || msg.includes('job')) {
+                return "🎯 Your future is bright! Focus on your studies, develop good habits, and explore your interests. What career field are you interested in?";
+            }
+            else if (msg.includes('time') && msg.includes('management')) {
+                return "⏰ Time management tips:\n1. Use a planner or calendar\n2. Prioritize tasks\n3. Set realistic goals\n4. Avoid procrastination\n5. Take breaks to stay fresh";
+            }
+            else {
+                return "That's a great question! I'm here to help with your studies, provide guidance, and support your educational journey. Could you please be more specific? You can ask me about any subject, study tips, or motivation!";
+            }
+        }
+
+        function addMessage(sender, message) {
+            const messages = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = message;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Initialize
+        loadAnnouncements();
+    </script>
+</body>
+</html>
